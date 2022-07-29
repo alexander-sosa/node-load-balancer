@@ -1,0 +1,34 @@
+version: '3'
+
+networks:
+  ucbnet:
+    driver: bridge
+    ipam:
+      driver: default
+      config:
+        - subnet: "10.20.0.0/16"
+          gateway: "10.20.0.1"
+
+services:
+  hello-1:
+    image: test1:1.0.0
+    ports:
+      - 8081:80
+    networks:
+      - ucbnet
+
+  hello-2:
+    image: test1:1.0.0
+    ports:
+      - 8082:80
+    networks:
+      - ucbnet
+  
+  nginx:
+    image: nginx:1.21.6
+    ports:
+      - 7777:80
+    networks:
+      - ucbnet
+
+# Con el load balancer ya no requieren exponer puertos los servicios, solo el nginx
